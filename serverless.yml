@@ -1,0 +1,48 @@
+service: my-lambda-app
+org: "personalorg555"
+app: "lambda-app"
+
+frameworkVersion: "4"
+
+stages:
+  default:
+    params:
+      
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "*"
+        - Effect: Allow
+          Action:
+            - apigateway:POST
+            - apigateway:GET
+            - apigateway:DELETE
+            - apigateway:PUT
+            - apigateway:PATCH
+            - apigateway:HEAD
+          Resource: "*"
+
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: "*"
